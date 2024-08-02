@@ -20,6 +20,7 @@ CREATE TABLE discussion_chains (
 
 CREATE TABLE messages (
     id SERIAL PRIMARY KEY,
+    content TEXT,
     discussion_chain_id INTEGER REFERENCES discussion_chains ON DELETE CASCADE,
     creator_id INTEGER REFERENCES users,
     sent_at TIMESTAMP
