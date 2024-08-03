@@ -1,7 +1,15 @@
 <!doctype html>
 <title>Keskustelusovellus - {% block title %}{% endblock %}</title>
 <h1>Keskustelusovellus</h1>
+
 <a href="/">Etusivu</a>
-<a href="/login">Kirjautuminen</a>
+
+{% if session.user_id %}
+Hei {{ session.user_name }}!
+<a href="/logout">Kirjaudu ulos</a>
+{% else %}
+<a href="/login">Kirjaudu sisään</a>
+{% endif %}
+
 <hr>
 {% block content %}{% endblock %}
