@@ -1,13 +1,13 @@
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    name TEXT,
+    name TEXT UNIQUE,
     password TEXT,
     admin BOOLEAN
 );
 
 CREATE TABLE discussion_areas (
     id SERIAL PRIMARY KEY,
-    topic TEXT,
+    topic TEXT UNIQUE,
     confidential BOOLEAN
 );
 
