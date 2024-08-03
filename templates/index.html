@@ -1,1 +1,21 @@
-Tämä on etusivu
+{% extends "layout.html" %}
+{% block title %}Etusivu{% endblock %}
+{% block content %}
+
+<h2>Etusivu</h2>
+
+{% for area in areas %}
+<a href="/area/{{ area.id }}">{{ area.topic }}</a>
+<br>
+Ketjujen määrä: {{ area[2] }}
+<br>
+Viestien määrä: {{ area[3] }}
+{% if area[4] %}
+<br>
+Viimeisimmän viestin lähetysaika: {{ area[4].strftime("%Y-%m-%d %H:%M:%S") }}
+{% endif %}
+<br>
+<br>
+{% endfor %}
+
+{% endblock %}

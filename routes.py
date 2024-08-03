@@ -4,4 +4,4 @@ import discussion_areas
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", areas=discussion_areas.get_stats())
