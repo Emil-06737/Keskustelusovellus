@@ -5,3 +5,7 @@ import discussion_areas
 @app.route("/")
 def index():
     return render_template("index.html", areas=discussion_areas.get_stats())
+
+@app.route("/login")
+def login():
+    return render_template("login.html")
