@@ -15,3 +15,20 @@ Sovelluksen ominaisuuksia:
 
 Aiheen lähde:
 https://hy-tsoha.github.io/materiaali/aiheen_valinta/
+
+Sovelluksen nykyinen Tilanne:
+* Pohja on tehty.
+* Käyttäjä voi kirjautua sisään ja ulos sekä luoda uuden tunnuksen.
+* Ylläpitäjä luodaan sovelluksen käynnistyksen yhteydessä.
+* Käyttäjä näkee sovelluksen etusivulla listan alueista sekä jokaisen alueen ketjujen ja viestien määrän.
+* Ylläpitäjä voi lisätä keskustelualueita.
+
+Käynnistysohjeet:
+Käynnistysohjeet ovat pääosin samat kuin sivulla https://hy-tsoha.github.io/materiaali/aikataulu/ kohdassa "esimerkki käynnistysohjeista" olevat käynnistysohjeet, mutta erona on se, että täytyy vielä lisätä käynnistysohjeissa mainittuun .env-tiedostoon yksi ylimääräinen ympäristömuuttuja nimeltä ADMIN_PASSWORD, jonka arvoksi tallennetaan haluamasi ylläpitäjän salasanan hajautusarvo, joka on luotu moduulin werkzeug.security funktiolla generate_password_hash. Voit luoda hajautusarvon esim. näin: 1. seuraa ensin sivun https://hy-tsoha.github.io/materiaali/aikataulu/ käynnistysohjeita, 2. pysy vielä virtuaaliympäristössä (pitää lukea venv komennon alussa), 3. suorita komento python3 python-tulkin käynnistämiseksi, 4. suorita komento: "from werkzeug.security import generate_password_hash" ilman sulkeita. 5. suorita komento generate_password_hash("haluamasa_salasana"), jossa kohdassa haluamasi_salasana on valitsemasi salasana (sisällytä sulkeet). Nyt pitää siis vielä tallentaa saamasi hajautusarvo .env tiedostoon muuttujan ADMIN_PASSWORD arvoksi. Kaiken jälkeen .env tiedoston tulee olla muotoa:
+
+DATABASE_URL=tietokannan-paikallinen-osoite
+SECRET_KEY=salainen-avain
+ADMIN_PASSWORD=scrypt:...
+
+Sovelluksen testaaminen:
+Tarvitset testaamiseen ylläpitäjän käyttäjätunnuksen, joka on admin, ja ylläpitäjän salasanan, joka on käynnistysohjeiden noudattamisen yhteydessä luomasi salasana (valitsit sen kohdassa haluamasi_salasana).
