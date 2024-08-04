@@ -1,6 +1,6 @@
 import os
 from db import db
-from flask import session
+from flask import abort, request, session
 from sqlalchemy.sql import text
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -41,3 +41,7 @@ def create_admin(password):
         sql = "UPDATE users SET password = :password WHERE name = 'admin'"
         db.session.execute(text(sql), {"password":password})
         db.session.commit()
+
+def check_csrf():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
