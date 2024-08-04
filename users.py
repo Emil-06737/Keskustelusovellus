@@ -42,6 +42,10 @@ def create_admin(password):
         db.session.execute(text(sql), {"password":password})
         db.session.commit()
 
+def require_admin():
+    if session["user_admin"]:
+        abort(403)
+
 def check_csrf():
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
