@@ -1,4 +1,5 @@
 import os
+from app import app
 from db import db
 from flask import abort, request, session
 from sqlalchemy.sql import text
@@ -33,14 +34,15 @@ def register(name, password):
     return login(name, password)
 
 def create_admin(password):
-    if not db.session.execute(text("SELECT 1 FROM users WHERE name = 'admin'")).fetchone():
-        sql = "INSERT INTO users (name, password, admin) VALUES ('admin', :password, true)"
-        db.session.execute(text(sql), {"password":password})
-        db.session.commit()
-    else:
-        sql = "UPDATE users SET password = :password WHERE name = 'admin'"
-        db.session.execute(text(sql), {"password":password})
-        db.session.commit()
+    with app.app_context():
+        if not db.session.execute(text("SELECT 1 FROM users WHERE name = 'admin'")).fetchone():
+            sql = "INSERT INTO users (name, password, admin) VALUES ('admin', :password, true)"
+            db.session.execute(text(sql), {"password":password})
+            db.session.commit()
+        else:
+            sql = "UPDATE users SET password = :password WHERE name = 'admin'"
+            db.session.execute(text(sql), {"password":password})
+            db.session.commit()
 
 def require_admin():
     if not session["user_admin"]:
