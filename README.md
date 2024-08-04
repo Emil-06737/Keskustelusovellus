@@ -34,5 +34,4 @@ SECRET_KEY=salainen-avain
 ADMIN_PASSWORD=scrypt:...
 
 Sovelluksen testaaminen:
-
 Tarvitset testaamiseen ylläpitäjän käyttäjätunnuksen, joka on admin, ja ylläpitäjän salasanan, joka on käynnistysohjeiden noudattamisen yhteydessä luomasi salasana (valitsit sen kohdassa haluamasi_salasana).
