@@ -31,3 +31,13 @@ def register(name, password):
     except:
         return False
     return login(name, password)
+
+def create_admin(password):
+    if not db.session.execute(text("SELECT 1 FROM users WHERE name = 'admin'")).fetchone():
+        sql = "INSERT INTO users (name, password, admin) VALUES ('admin', :password, true)"
+        db.session.execute(text(sql), {"password":password})
+        db.session.commit()
+    else:
+        sql = "UPDATE users SET password = :password WHERE name = 'admin'"
+        db.session.execute(text(sql), {"password":password})
+        db.session.commit()
