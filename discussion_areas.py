@@ -7,3 +7,12 @@ def get_stats():
              ON da.id = dc.discussion_area_id LEFT JOIN messages m ON dc.id = m.discussion_chain_id
              GROUP BY da.id ORDER BY da.id"""
     return db.session.execute(text(sql)).fetchall()
+
+def add_discussion_area(topic, confidentiality):
+    try:
+        sql = "INSERT INTO discussion_areas (topic, confidential) VALUES (:topic, :confidentiality)"
+        db.session.execute(text(sql), {"topic":topic, "confidentiality":confidentiality})
+        db.session.commit()
+        return True
+    except:
+        return False

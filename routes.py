@@ -45,3 +45,24 @@ def register():
         if not users.register(username, password1):
             return render_template("error.html", message="Rekisteröinti ei onnistunut.")
         return redirect("/")
+    
+@app.route("/create-area", methods=["post"])
+def create_area():
+    users.check_csrf()
+    users.require_admin()
+
+    topic = request.form["topic"]
+    if len(topic) < 3 or len(topic) > 50:
+        return render_template("error.html", message="Aiheen tulee olla 3-50 merkkiä.")
+
+    secret=request.form["secret"]
+
+    if int(secret) not in [0, 1]:
+        return render_template("error.html", message="Vääränlainen salaisuus.")
+    
+    if not discussion_areas.add_discussion_area(topic, secret):
+        message1 = "Samanaiheinen keskustelualue on jo olemassa."
+        return render_template("error.html", message=message1)
+    
+    return redirect("/")
+    

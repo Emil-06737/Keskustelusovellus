@@ -43,7 +43,7 @@ def create_admin(password):
         db.session.commit()
 
 def require_admin():
-    if session["user_admin"]:
+    if not session["user_admin"]:
         abort(403)
 
 def check_csrf():
