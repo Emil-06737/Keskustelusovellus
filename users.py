@@ -4,6 +4,7 @@ from db import db
 from flask import abort, request, session
 from sqlalchemy.sql import text
 from werkzeug.security import check_password_hash, generate_password_hash
+import discussion_areas
 
 def login(name, password):
     sql = "SELECT id, name, password, admin FROM users WHERE name=:name"
@@ -51,3 +52,11 @@ def require_admin():
 def check_csrf():
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
+
+def has_access_to_area(id):
+    if discussion_areas.is_confidential(id):
+        if not session.get("user_admin", False):
+            users = discussion_areas.get_users_of_confidential_area(id)
+            if session.get("user_id", 0) not in users:
+                return False
+    return True

@@ -10,9 +10,28 @@ def get_stats():
 
 def add_discussion_area(topic, confidentiality):
     try:
-        sql = "INSERT INTO discussion_areas (topic, confidential) VALUES (:topic, :confidentiality)"
+        sql = """INSERT INTO discussion_areas (topic, confidential)
+                 VALUES (:topic, :confidentiality)"""
         db.session.execute(text(sql), {"topic":topic, "confidentiality":confidentiality})
         db.session.commit()
         return True
     except:
         return False
+
+def is_confidential(id):
+    sql = "SELECT confidential FROM discussion_areas WHERE id = :id"
+    return db.session.execute(text(sql), {"id":id}).fetchone()[0]
+
+def get_users_of_confidential_area(id):
+    sql = """SELECT user_id FROM users_of_confidential_discussion_areas
+             WHERE discussion_area_id = :id"""
+    list = db.session.execute(text(sql), {"id":id}).fetchall()
+    return [row[0] for row in list]
+
+def get_chains(id):
+    sql = "SELECT id, header FROM discussion_chains WHERE discussion_area_id = :id ORDER BY id"
+    return db.session.execute(text(sql), {"id":id}).fetchall()
+
+def get_topic(id):
+    sql = "SELECT topic FROM discussion_areas WHERE id = :id"
+    return db.session.execute(text(sql), {"id":id}).fetchone()[0]

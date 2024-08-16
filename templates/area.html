@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block title %}{{ topic }}{% endblock %}
+{% block content %}
+
+<h2>{{ topic }}</h2>
+
+<form action="\create-chain" method="post">
+    Lisää keskusteluketju tähän keskustelualueeseen:
+    <br>
+    Otsikko: <br> <input type="text" name="header" minlength="3" maxlength="50">
+    <br>
+    Aloitusviesti: <br> <textarea name="message" rows="3" cols="50"></textarea>
+    <br>
+    <input type="submit" value="Luo keskusteluketju">
+    <input type="hidden" name="id" value="{{ id }}">
+</form>
+
+<br>
+{% for chain in chains %}
+<p>
+<a href="/chain/{{ chain.id }}">{{ chain[1] }}</a>
+{% endfor %}
+
+<br>
+<br>
+<p>
+<a href="/">Palaa takaisin</a>
+
+{% endblock %}

@@ -7,6 +7,14 @@ import users
 def index():
     return render_template("index.html", areas=discussion_areas.get_stats())
 
+@app.route("/area/<int:area_id>")
+def area(area_id):
+    if not users.has_access_to_area(area_id):
+        return render_template("error.html", message="Ei oikeutta nähdä sivua.")
+    area_topic = discussion_areas.get_topic(area_id)
+    area_chains = discussion_areas.get_chains(area_id)
+    return render_template("area.html", id=area_id, topic=area_topic, chains=area_chains)
+
 @app.route("/login", methods=["get", "post"])
 def login():
     if request.method == "GET":
