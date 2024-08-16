@@ -1,12 +1,14 @@
 from db import db
 from sqlalchemy.sql import text
+from users import has_access_to_area
 
 def get_stats():
     sql = """SELECT da.id, da.topic, COUNT(DISTINCT dc.id), COUNT(m.id), MAX(m.sent_at)
              FROM discussion_areas da LEFT JOIN discussion_chains dc
              ON da.id = dc.discussion_area_id LEFT JOIN messages m ON dc.id = m.discussion_chain_id
              GROUP BY da.id ORDER BY da.id"""
-    return db.session.execute(text(sql)).fetchall()
+    list = db.session.execute(text(sql)).fetchall()
+    return [area for area in list if has_access_to_area(area.id)]
 
 def add_discussion_area(topic, confidentiality):
     try:
