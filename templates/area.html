@@ -4,18 +4,22 @@
 
 <h2>{{ topic }}</h2>
 
+{% if session.user_id %}
 <form action="\create-chain" method="post">
-    Lisää keskusteluketju tähän keskustelualueeseen:
+    Luo keskusteluketju tähän keskustelualueeseen:
     <br>
     Otsikko: <br> <input type="text" name="header" minlength="3" maxlength="50">
     <br>
     Aloitusviesti: <br> <textarea name="message" rows="3" cols="50"></textarea>
     <br>
     <input type="submit" value="Luo keskusteluketju">
-    <input type="hidden" name="id" value="{{ id }}">
+    <input type="hidden" name="area_id" value="{{ id }}">
+    <input type="hidden" name="creator_id" value="{{ session.user_id }}">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
-
 <br>
+{% endif %}
+
 {% for chain in chains %}
 <p>
 <a href="/chain/{{ chain.id }}">{{ chain[1] }}</a>
