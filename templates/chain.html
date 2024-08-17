@@ -15,6 +15,7 @@
 <form action="/create-message" method="post">
     Uusi viesti:<br>
     <textarea name="message" rows="3" cols="50" minlength="1" maxlength="5000"></textarea>
+    <br>
     <input type="submit" value="Lähetä viesti">
     <input type="hidden" name="chain_id" value="{{ id }}">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
