@@ -16,6 +16,14 @@ def area(area_id):
     area_chains = discussion_areas.get_chains(area_id)
     return render_template("area.html", id=area_id, topic=area_topic, chains=area_chains)
 
+@app.route("/chain/<int:chain_id>")
+def chain(chain_id):
+    if not users.has_access_to_chain(chain_id):
+        return render_template("error.html", message="Ei oikeutta nähdä sivua.")
+    messages1 = discussion_chains.get_messages(chain_id)
+    chain1 = discussion_chains.get_stats(chain_id)
+    return render_template("chain.html", chain=chain1, messages=messages1)
+
 @app.route("/login", methods=["get", "post"])
 def login():
     if request.method == "GET":

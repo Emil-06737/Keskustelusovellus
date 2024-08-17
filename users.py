@@ -60,3 +60,8 @@ def has_access_to_area(id):
             if session.get("user_id", 0) not in users:
                 return False
     return True
+
+def has_access_to_chain(chain):
+    sql = "SELECT discussion_area_id FROM discussion_chains WHERE id=:chain"
+    area = db.session.execute(text(sql), {"chain":chain}).fetchone()[0]
+    return has_access_to_area(area)
