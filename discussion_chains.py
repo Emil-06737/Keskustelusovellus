@@ -5,7 +5,7 @@ from users import has_access_to_chain
 
 def create_chain(header, area, creator, message):
     sql = """INSERT INTO discussion_chains (header, discussion_area_id, creator_id)
-          VALUES (:header, :area, :creator) RETURNING id"""
+             VALUES (:header, :area, :creator) RETURNING id"""
     result = db.session.execute(text(sql), {"header":header, "area":area, "creator":creator})
     chain_id = result.fetchone().id
     create_message(message, chain_id, creator)
