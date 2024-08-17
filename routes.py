@@ -41,7 +41,7 @@ def register():
     if request.method == "POST":
         username = request.form["username"]
         if len(username) < 3 or len(username) > 20:
-            return render_template("error.html", message="Tunnuksessa tulee olla 3-20 merrkiä.")
+            return render_template("error.html", message="Tunnuksessa tulee olla 3-20 merkkiä.")
         
         password1 = request.form["password1"]
         password2 = request.form["password2"]
