@@ -7,8 +7,10 @@ def get_stats():
              FROM discussion_areas da LEFT JOIN discussion_chains dc
              ON da.id = dc.discussion_area_id LEFT JOIN messages m ON dc.id = m.discussion_chain_id
              GROUP BY da.id ORDER BY da.id"""
-    list = db.session.execute(text(sql)).fetchall()
-    return [area for area in list if has_access_to_area(area.id)]
+    return db.session.execute(text(sql)).fetchall()
+
+def get_accessed_stats():
+    return [area for area in get_stats() if has_access_to_area(area.id)]
 
 def add_discussion_area(topic, confidentiality):
     try:

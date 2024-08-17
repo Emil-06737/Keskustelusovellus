@@ -5,7 +5,7 @@ import users
 
 @app.route("/")
 def index():
-    return render_template("index.html", areas=discussion_areas.get_stats())
+    return render_template("index.html", areas=discussion_areas.get_accessed_stats())
 
 @app.route("/area/<int:area_id>")
 def area(area_id):
