@@ -1,6 +1,7 @@
 from app import app
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, session
 import discussion_areas
+import discussion_chains
 import users
 
 @app.route("/")
@@ -73,4 +74,23 @@ def create_area():
         return render_template("error.html", message=message1)
     
     return redirect("/")
+
+@app.route("/create-chain", methods=["post"])
+def create_chain():
+    users.check_csrf()
+
+    header = request.form["header"]
+    if len(header) < 3 or len(header) > 50:
+        return render_template("error.html", message="Otsikon tulee olla 3-50 merkkiä.")
     
+    message = request.form["message"]
+    if len(message) < 1 or len(message) > 5000:
+        return render_template("error.html", message="Viestin tulee olla 1-5000 merkkiä.")
+    
+    area_id = request.form["area_id"]
+    if int(area_id) not in [int(area.id) for area in discussion_areas.get_accessed_stats()]:
+        return render_template("error.html", message="Väärä keskustelualue.")
+    
+    discussion_chains.create_chain(header, area_id, session["user_id"], message)
+
+    return redirect(f"/area/{area_id}")
