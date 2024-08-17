@@ -2,6 +2,7 @@ from app import app
 from flask import render_template, request, redirect, session
 import discussion_areas
 import discussion_chains
+import messages
 import users
 
 @app.route("/")
@@ -22,7 +23,8 @@ def chain(chain_id):
         return render_template("error.html", message="Ei oikeutta nähdä sivua.")
     messages1 = discussion_chains.get_messages(chain_id)
     chain1 = discussion_chains.get_stats(chain_id)
-    return render_template("chain.html", chain=chain1, messages=messages1)
+    return render_template("chain.html", id=chain_id, chain=chain1, messages=messages1)
+
 
 @app.route("/login", methods=["get", "post"])
 def login():
@@ -92,13 +94,33 @@ def create_chain():
         return render_template("error.html", message="Otsikon tulee olla 3-50 merkkiä.")
     
     message = request.form["message"]
-    if len(message) < 1 or len(message) > 5000:
-        return render_template("error.html", message="Viestin tulee olla 1-5000 merkkiä.")
+    minmax = messages.check_length(message)
+    if minmax:
+        message1 = f"Viestin tulee olla {minmax[0]}-{minmax[1]} merkkiä."
+        return render_template("error.html", message=message1)
     
-    area_id = request.form["area_id"]
-    if int(area_id) not in [int(area.id) for area in discussion_areas.get_accessed_stats()]:
+    area_id = int(request.form["area_id"])
+    if area_id not in [area.id for area in discussion_areas.get_accessed_stats()]:
         return render_template("error.html", message="Väärä keskustelualue.")
     
     discussion_chains.create_chain(header, area_id, session["user_id"], message)
 
     return redirect(f"/area/{area_id}")
+
+@app.route("/create-message", methods=["post"])
+def create_message():
+    users.check_csrf()
+
+    message = request.form["message"]
+    minmax = messages.check_length(message)
+    if minmax:
+        message1 = f"Viestin tulee olla {minmax[0]}-{minmax[1]} merkkiä."
+        return render_template("error.html", message=message1)
+    
+    chain_id = int(request.form["chain_id"])
+    if chain_id not in discussion_chains.get_accessed_chains():
+        return render_template("error.html", message="Väärä keskusteluketju.")
+    
+    messages.create_message(message, chain_id, session["user_id"])
+
+    return redirect(f"/chain/{chain_id}")
