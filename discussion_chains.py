@@ -21,5 +21,5 @@ def get_accessed_chains():
 
 def get_messages(chain):
     sql = """SELECT M.id, M.content, M.creator_id, M.sent_at, U.name FROM messages M, users U
-             WHERE M.discussion_chain_id=:chain and U.id = M.creator_id"""
+             WHERE M.discussion_chain_id=:chain and U.id = M.creator_id ORDER BY M.id"""
     return db.session.execute(text(sql), {"chain":chain}).fetchall()
