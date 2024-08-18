@@ -5,9 +5,9 @@
 <hr>
 <h2>Kirjautuminen</h2>
 <form action="/login" method="post">
-    Käyttäjätunnus: <br><input type="text" name="username">
+    Käyttäjätunnus: <br><input type="text" name="username" minlength="3" maxlength="20">
     <p>
-    Salasana: <br><input type="password" name="password">
+    Salasana: <br><input type="password" name="password" minlength="5" maxlength="100">
     <p>
     <input type="submit" value="Kirjaudu">
 </form>
