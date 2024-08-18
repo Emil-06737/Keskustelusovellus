@@ -4,7 +4,7 @@
 <a href="/">Etusivu</a>
 <hr>
 <h2>Rekisteröinti</h2>
-<form action="/register" method="post">
+<form action="/register" method="post" onsubmit="return check(this)">
     Käyttäjätunnus: <br><input type="text" name="username" minlength="3" maxlength="20">
     <p>
     Salasana: <br><input type="password" name="password1" minlength="5" maxlength="100">
@@ -16,3 +16,13 @@
 
 <p>
 <a href="/login">Palaa takaisin</a>
+
+<script>
+    function check(form) {
+        if (form.password1.value != form.password2.value) {
+            alert("Salasanat eroavat.")
+            return false
+        }
+        return true
+    }
+</script>
