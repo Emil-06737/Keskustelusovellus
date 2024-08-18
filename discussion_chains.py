@@ -20,5 +20,6 @@ def get_accessed_chains():
     return [chain.id for chain in chains if has_access_to_chain(chain.id)]
 
 def get_messages(chain):
-    sql = "SELECT id, content, creator_id, sent_at FROM messages WHERE discussion_chain_id=:chain"
+    sql = """SELECT M.id, M.content, M.creator_id, M.sent_at, U.name FROM messages M, users U
+             WHERE M.discussion_chain_id=:chain and U.id = M.creator_id"""
     return db.session.execute(text(sql), {"chain":chain}).fetchall()
