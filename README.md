@@ -42,8 +42,8 @@ Tarvitset testaamiseen ylläpitäjän käyttäjätunnuksen, joka on admin, ja yl
 Tässä sivulta https://hy-tsoha.github.io/materiaali/aikataulu/ kohdasta "esimerkki käynnistysohjeista" kopioidut käynnistysohjeet:  
   
 Kloonaa tämä repositorio omalle koneellesi ja siirry sen juurikansioon. Luo kansioon .env-tiedosto ja määritä sen sisältö seuraavanlaiseksi:  
-DATABASE_URL=<tietokannan-paikallinen-osoite>  
-SECRET_KEY=<salainen-avain>  
+DATABASE_URL=tietokannan-paikallinen-osoite  
+SECRET_KEY=salainen-avain> 
 
 Seuraavaksi aktivoi virtuaaliympäristö ja asenna sovelluksen riippuvuudet komennoilla  
   
