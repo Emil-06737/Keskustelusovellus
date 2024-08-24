@@ -58,7 +58,7 @@ def register():
         password2 = request.form["password2"]
         if password1 != password2:
             return render_template("error.html", message="Salasanat eroavat.")
-        if password1 < 5 or password1 > 100:
+        if len(password1) < 5 or len(password1) > 100:
             return render_template("error.html", message="Salasanan tulee olla 5-100 merkkiä.")
         
         if not users.register(username, password1):
