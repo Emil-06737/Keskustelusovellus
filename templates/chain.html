@@ -13,6 +13,8 @@
 <br>
 {{ message[3].strftime("%Y-%m-%d %H:%M:%S") }}
 {% endfor %}
+
+{% if session.user_id %}
 <p>
 <form action="/create-message" method="post">
     Uusi viesti:<br>
@@ -22,6 +24,7 @@
     <input type="hidden" name="chain_id" value="{{ id }}">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
+{% endif %}
 
 <br>
 <br>
