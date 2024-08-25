@@ -90,8 +90,10 @@ def create_chain():
     users.check_csrf()
 
     header = request.form["header"]
-    if len(header) < 3 or len(header) > 50:
-        return render_template("error.html", message="Otsikon tulee olla 3-50 merkkiä.")
+    minmax = discussion_chains.check_length(header)
+    if minmax:
+        message2=f"Otsikon tulee olla {minmax[0]}-{minmax[1]} merkkiä."
+        return render_template("error.html", message=message2)
     
     message = request.form["message"]
     minmax = messages.check_length(message)
@@ -124,3 +126,17 @@ def create_message():
     messages.create_message(message, chain_id, session["user_id"])
 
     return redirect(f"/chain/{chain_id}")
+
+@app.route("/modify-chain-header", methods=["post"])
+def modify_chain_header():
+    users.check_csrf()
+    id = request.form["id"]
+    if discussion_chains.get_stats(int(id))[2] != session["user_id"]:
+        return render_template("error.html", message="Ei oikeutta muokata tätä otsikkoa.")
+    header = request.form["header"]
+    minmax = discussion_chains.check_length(header)
+    if minmax:
+        message1 = f"Otsikon tulee olla {minmax[0]}-{minmax[1]} merkkiä."
+        return render_template("error.html", message=message1)
+    discussion_chains.modify_header(id, header)
+    return redirect(f"/chain/{id}")

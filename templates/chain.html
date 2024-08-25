@@ -3,7 +3,12 @@
 
 {% block content %}
 
-<h2>{{ chain[0] }}</h2>
+<div id="header">
+    <h2>{{ chain[0] }}</h2>
+    {% if chain[2] == session.user_id %}
+    <button onclick="modifyHeader()">Muokkaa</button>
+    {% endif %}
+</div>
 
 {% for message in messages %}
 <p>
@@ -30,5 +35,24 @@
 <br>
 <p>
 <a href="/area/{{ chain[1] }}">Palaa takaisin</a>
+
+<script>
+    function modifyHeader() {
+        var header = document.getElementById("header");
+        header.innerHTML = "";
+        var forms = `
+            <form action="/modify-chain-header" method="post">
+                <input type="text" name="header" value={{ chain[0] }} minlength="3" maxlength="50">
+                <input type="submit" value="Tallenna">
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                <input type="hidden" name="id" value={{ id }}>
+            </form>
+            <form action="/chain/{{ id }}">
+                <input type="submit" value="Peruuta">
+            </form>
+        `;
+        header.innerHTML = forms;
+    }
+</script>
 
 {% endblock %}
