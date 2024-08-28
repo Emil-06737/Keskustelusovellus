@@ -1,5 +1,5 @@
 from app import app
-from flask import render_template, request, redirect, session
+from flask import render_template, request, redirect, session, abort
 import discussion_areas
 import discussion_chains
 import messages
@@ -140,3 +140,17 @@ def modify_chain_header():
         return render_template("error.html", message=message1)
     discussion_chains.modify_header(id, header)
     return redirect(f"/chain/{id}")
+
+@app.route("/remove-chain", methods=["post"])
+def remove_chain():
+    users.check_csrf()
+
+    id = request.form["id"]
+    chain_stats = discussion_chains.get_stats(id)
+    if not chain_stats:
+        abort(403)
+    if chain_stats[2] != session.get("user_id", 0):
+        abort(403)
+    
+    discussion_chains.remove(id)
+    return redirect(f"/area/{chain_stats[1]}")

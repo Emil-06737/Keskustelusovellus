@@ -7,6 +7,11 @@
     <h2>{{ chain[0] }}</h2>
     {% if chain[2] == session.user_id %}
     <button onclick="modifyHeader()">Muokkaa</button>
+    <form action="/remove-chain" method="post">
+        <input type="submit" value="Poista" onclick="return confirm('Haluatko varmasti poistaa keskusteluketjun?')">
+        <input type="hidden" name="id" value="{{ id }}">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    </form>
     {% endif %}
 </div>
 

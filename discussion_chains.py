@@ -36,3 +36,8 @@ def check_length(header):
         return (min, max)
     else:
         return None
+
+def remove(chain):
+    sql = "DELETE FROM discussion_chains WHERE id=:id"
+    db.session.execute(text(sql), {"id":chain})
+    db.session.commit()
