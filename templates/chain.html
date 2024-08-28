@@ -42,10 +42,10 @@
         header.innerHTML = "";
         var forms = `
             <form action="/modify-chain-header" method="post">
-                <input type="text" name="header" value={{ chain[0] }} minlength="3" maxlength="50">
+                <input type="text" name="header" value="{{ chain[0] }}" minlength="3" maxlength="50">
                 <input type="submit" value="Tallenna">
                 <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-                <input type="hidden" name="id" value={{ id }}>
+                <input type="hidden" name="id" value="{{ id }}">
             </form>
             <form action="/chain/{{ id }}">
                 <input type="submit" value="Peruuta">
