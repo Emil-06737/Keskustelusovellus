@@ -3,6 +3,15 @@
 {% block content %}
 
 <h2>{{ topic }}</h2>
+{% if session.user_admin %}
+<form action="/remove-area" method="post">
+    <input type="submit" value="Poista" onclick="return confirm('Haluatko varmasti poistaa keskustelualueen?')">
+    <input type="hidden" name="id" value="{{ id }}">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+</form>
+<br>
+<br>
+{% endif %}
 
 {% if session.user_id %}
 <form action="/create-chain" method="post">

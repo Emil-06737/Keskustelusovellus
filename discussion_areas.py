@@ -39,3 +39,8 @@ def get_chains(id):
 def get_topic(id):
     sql = "SELECT topic FROM discussion_areas WHERE id = :id"
     return db.session.execute(text(sql), {"id":id}).fetchone()[0]
+
+def remove_area(id):
+    sql = "DELETE FROM discussion_areas WHERE id = :id"
+    db.session.execute(text(sql), {"id":id})
+    db.session.commit()

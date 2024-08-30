@@ -182,3 +182,11 @@ def remove_message():
 def result():
     query = request.args["query"]
     return render_template("result.html", messages=messages.search(query), query=query)
+
+@app.route("/remove-area", methods=["post"])
+def remove_area():
+    users.check_csrf()
+    if not session.get("user_admin", False):
+        abort(403)
+    discussion_areas.remove_area(request.form["id"])
+    return redirect("/")
