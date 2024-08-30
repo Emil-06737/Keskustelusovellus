@@ -154,3 +154,15 @@ def remove_chain():
     
     discussion_chains.remove(id)
     return redirect(f"/area/{chain_stats[1]}")
+
+@app.route("/modify-message", methods=["post"])
+def modify_message():
+    users.check_csrf()
+    id = request.form["id"]
+    message = request.form["message"]
+    message_information = messages.get_information(id)
+    if (session.get("user_id", 0) != message_information[2]) or messages.check_length(message):
+        abort(403)
+
+    messages.modify_content(id, message)
+    return redirect(f"/chain/{message_information[1]}")

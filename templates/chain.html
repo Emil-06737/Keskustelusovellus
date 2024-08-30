@@ -16,12 +16,17 @@
 </div>
 
 {% for message in messages %}
-<p>
-{{ message[4] }}
-<br>
-{{ message[1] }}
-<br>
-{{ message[3].strftime("%Y-%m-%d %H:%M:%S") }}
+<div id="message{{ message[0] }}">
+    <p>
+    <span class="creator">{{ message[4] }}</span>
+    <br>
+    <span class="message">{{ message[1] }}</span>
+    {% if message[2] == session.user_id %}
+    <button class="modify" onclick="modifyMessage('{{ message[0] }}')">Muokkaa</button>
+    {% endif %}
+    <br>
+    <span class="sentAt">{{ message[3].strftime("%Y-%m-%d %H:%M:%S") }}</span>
+</div>
 {% endfor %}
 
 {% if session.user_id %}
@@ -57,6 +62,32 @@
             </form>
         `;
         header.innerHTML = forms;
+    }
+
+    function modifyMessage(id) {
+        message = document.getElementById(`message${id}`);
+        creator = message.querySelector('.creator').innerHTML;
+        content = message.querySelector('.message').innerHTML;
+        sentAt = message.querySelector('.sentAt').innerHTML;
+
+        var newContent = `
+            <p>
+            <form action="/modify-message" method="post">
+                ${creator}
+                <br>
+                <textarea name="message" rows="3" cols="50" minlength="1" maxlength="5000">${content}</textarea>
+                <br>
+                ${sentAt}
+                <input type="submit" value="Tallenna">
+                <input type="hidden" name="id" value="${id}">
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            </form>
+            <form action="/chain/{{ id }}">
+                <input type="submit" value="Peruuta">
+            </form>
+        `;
+
+        message.innerHTML = newContent;
     }
 </script>
 
