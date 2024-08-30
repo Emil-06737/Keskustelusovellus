@@ -12,15 +12,24 @@ def get_stats():
 def get_accessed_stats():
     return [area for area in get_stats() if has_access_to_area(area.id)]
 
-def add_discussion_area(topic, confidentiality):
+def add_discussion_area(topic, confidentiality, users=None):
     try:
         sql = """INSERT INTO discussion_areas (topic, confidential)
-                 VALUES (:topic, :confidentiality)"""
-        db.session.execute(text(sql), {"topic":topic, "confidentiality":confidentiality})
+                 VALUES (:topic, :confidentiality) RETURNING id"""
+        result = db.session.execute(text(sql), {"topic":topic, "confidentiality":confidentiality})
+        id = result.fetchone().id
+        if confidentiality and users:
+            add_users_to_secret_area(id, users)
         db.session.commit()
         return True
     except:
         return False
+
+def add_users_to_secret_area(id, users):
+    for user in users:
+        sql = """INSERT INTO users_of_confidential_discussion_areas (discussion_area_id, user_id)
+                 VALUES (:id, :user)"""
+        db.session.execute(text(sql), {"id":id, "user":user})
 
 def is_confidential(id):
     sql = "SELECT confidential FROM discussion_areas WHERE id = :id"

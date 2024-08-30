@@ -65,25 +65,36 @@ def register():
             return render_template("error.html", message="Rekisteröinti ei onnistunut.")
         return redirect("/")
     
-@app.route("/create-area", methods=["post"])
+@app.route("/create-area", methods=["get", "post"])
 def create_area():
-    users.check_csrf()
-    users.require_admin()
+    if request.method == "GET":
+        users.require_admin()
+        return render_template("create_area.html", users=users.get_normal_users())
 
-    topic = request.form["topic"]
-    if len(topic) < 3 or len(topic) > 50:
-        return render_template("error.html", message="Aiheen tulee olla 3-50 merkkiä.")
+    if request.method == "POST":
+        users.check_csrf()
+        users.require_admin()
 
-    secret=request.form["secret"]
+        topic = request.form["topic"]
+        if len(topic) < 3 or len(topic) > 50:
+            return render_template("error.html", message="Aiheen tulee olla 3-50 merkkiä.")
 
-    if int(secret) not in [0, 1]:
-        return render_template("error.html", message="Vääränlainen salaisuus.")
+        secret=request.form["secret"]
+
+        if int(secret) not in [0, 1]:
+            return render_template("error.html", message="Vääränlainen salaisuus.")
+        
+        secret_users = request.form.getlist("user")
+        normal_users_ids = [user.id for user in users.get_normal_users()]
+        for secret_user in secret_users:
+            if int(secret_user) not in normal_users_ids:
+                abort(403)
     
-    if not discussion_areas.add_discussion_area(topic, secret):
-        message1 = "Samanaiheinen keskustelualue on jo olemassa."
-        return render_template("error.html", message=message1)
+        if not discussion_areas.add_discussion_area(topic, secret, secret_users):
+            message1 = "Samanaiheinen keskustelualue on jo olemassa."
+            return render_template("error.html", message=message1)
     
-    return redirect("/")
+        return redirect("/")
 
 @app.route("/create-chain", methods=["post"])
 def create_chain():

@@ -5,18 +5,8 @@
 <h2>Etusivu</h2>
 
 {% if session.user_admin == True %}
-Lisää keskustelualue:
+<a href="/create-area"><button>Luo keskustelualue</button></a>
 <br>
-<form action="/create-area" method="post">
-    Aihe: <br><input type="text" name="topic" minlength="3" maxlength="50">
-    <br>
-    Salainen:
-    <input type="radio" name="secret" value="0"> Ei
-    <input type="radio" name="secret" value="1"> Kyllä
-    <br>
-    <input type="submit" value="Lisää">
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-</form>
 <br>
 {% endif %}
 

@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block title %}Keskustelualueen luonti{% endblock %}
+
+{% block content %}
+
+<h2>Keskustelualueen luonti</h2>
+
+<form action="/create-area" method="post">
+    Aihe: <br><input type="text" name="topic" minlength="3" maxlength="50">
+    <br>
+    Salainen:
+    <input id="false" type="radio" name="secret" value="0" onchange="changeUserVisibility()" required> Ei
+    <input id="true" type="radio" name="secret" value="1" onchange="changeUserVisibility()"> Kyllä
+    <br>
+    <span id="users"></span>
+    <input type="submit" value="Luo">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+</form>
+
+<br>
+<a href="/"><button>Palaa takaisin</button></a>
+
+<script>
+    function changeUserVisibility() {
+        if (document.getElementById('false').checked) {
+            document.getElementById('users').innerHTML = ""
+        };
+        if (document.getElementById('true').checked) {
+            newContent = `
+                Salaisen alueen käyttäjät:
+                <br>
+                {% for user in users %}
+                <input type="checkbox" name="user" value="{{ user.id }}">{{ user[1] }}
+                <br>
+                {% endfor %}
+            `
+            document.getElementById('users').innerHTML = newContent;
+        };
+    }
+</script>
+
+{% endblock %}
