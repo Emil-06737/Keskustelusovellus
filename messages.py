@@ -1,5 +1,6 @@
 from db import db
 from sqlalchemy.sql import text
+from users import has_access_to_chain
 
 def create_message(message, chain, creator):
     sql = """INSERT INTO messages (content, discussion_chain_id, creator_id, sent_at)
@@ -28,3 +29,11 @@ def check_length(message):
         return (min, max)
     else:
         return None
+
+def search(query):
+    sql = """SELECT m.content, m.discussion_chain_id, m.sent_at, u.name
+             FROM messages m, users u WHERE m.creator_id = u.id AND content LIKE :query
+             ORDER BY m.id DESC"""
+    messages = db.session.execute(text(sql), {"query":"%"+query+"%"}).fetchall()
+    accessed_messages = [message for message in messages if has_access_to_chain(message[1])]
+    return accessed_messages

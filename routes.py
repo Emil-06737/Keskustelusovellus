@@ -177,3 +177,8 @@ def remove_message():
     
     messages.remove_message(id)
     return redirect(f"/chain/{message_information[1]}")
+
+@app.route("/result")
+def result():
+    query = request.args["query"]
+    return render_template("result.html", messages=messages.search(query), query=query)

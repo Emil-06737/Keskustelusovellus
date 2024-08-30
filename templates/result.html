@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block title %}{{ query }} - Haku{% endblock %}
+{% block content %}
+
+<h2>Löydetyt viestit</h2>
+
+{% if messages|length == 0 %}
+Ei löydettyjä viestejä.
+{% endif %}
+
+{% for message in messages %}
+<p>
+{{ message[3] }}
+<br>
+{{ message[0] }}
+<br>
+{{ message[2].strftime("%Y-%m-%d %H:%M:%S") }}
+<br>
+<a href="/chain/{{ message[1] }}"><button>Mene viestin ketjuun</button></a>
+{% endfor %}
+
+{% endblock %}

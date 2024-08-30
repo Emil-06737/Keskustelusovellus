@@ -10,6 +10,9 @@ Hei {{ session.user_name }}!
 {% else %}
 <a href="/login">Kirjaudu sisään</a>
 {% endif %}
-
+<form action="/result" method="get">
+    Hae viestejä: <input type="text" name="query">
+    <input type="submit" value="Hae">
+</form>
 <hr>
 {% block content %}{% endblock %}
