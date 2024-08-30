@@ -166,3 +166,14 @@ def modify_message():
 
     messages.modify_content(id, message)
     return redirect(f"/chain/{message_information[1]}")
+
+@app.route("/remove-message", methods=["post"])
+def remove_message():
+    users.check_csrf()
+    id = request.form["id"]
+    message_information = messages.get_information(id)
+    if session.get("user_id", 0) != message_information[2]:
+        abort(403)
+    
+    messages.remove_message(id)
+    return redirect(f"/chain/{message_information[1]}")

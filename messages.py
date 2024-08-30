@@ -16,6 +16,11 @@ def modify_content(id, message):
     db.session.execute(text(sql), {"content":message, "id":id})
     db.session.commit()
 
+def remove_message(id):
+    sql = "DELETE FROM messages WHERE id=:id"
+    db.session.execute(text(sql), {"id":id})
+    db.session.commit()
+
 def check_length(message):
     min = 1
     max = 5000

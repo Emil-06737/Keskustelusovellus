@@ -26,6 +26,13 @@
     {% endif %}
     <br>
     <span class="sentAt">{{ message[3].strftime("%Y-%m-%d %H:%M:%S") }}</span>
+    {% if message[2] == session.user_id %}
+    <form class="remove" action="/remove-message" method="post">
+        <input type="submit" value="Poista" onclick="return confirm('Haluatko varmasti poistaa viestin?')">
+        <input type="hidden" name="id" value="{{ message[0] }}">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    </form>
+    {% endif %}
 </div>
 {% endfor %}
 
