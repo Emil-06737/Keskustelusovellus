@@ -201,3 +201,33 @@ def remove_area():
         abort(403)
     discussion_areas.remove_area(request.form["id"])
     return redirect("/")
+
+@app.route("/choose-users", methods=["get", "post"])
+def choose_users():
+    users.require_admin()
+
+    if request.method == "GET":
+        id1 = request.args["id"]
+        secret = discussion_areas.is_confidential(id1)
+        n_users = users.get_normal_users()
+        s_users = discussion_areas.get_users_of_confidential_area(id1)
+        topic1 = discussion_areas.get_topic(id1)
+        return render_template("choose_users.html", id=id1, confidentiality=secret, normal_users=n_users,
+                               secret_users=s_users, topic=topic1)
+    
+    if request.method == "POST":
+        users.check_csrf()
+        id = request.form["id"]
+        confidentiality = request.form["secret"]
+        secret_users = request.form.getlist("user")
+        if int(id) not in [area[0] for area in discussion_areas.get_stats()]:
+            abort(403)
+        if int(confidentiality) not in [0, 1]:
+            abort(403)
+        normal_users_ids = [user.id for user in users.get_normal_users()]
+        for secret_user in secret_users:
+            if int(secret_user) not in normal_users_ids:
+                abort(403)
+        
+        discussion_areas.update_users(id, confidentiality, secret_users)
+        return redirect(f"/area/{id}")

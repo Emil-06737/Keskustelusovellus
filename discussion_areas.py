@@ -25,6 +25,21 @@ def add_discussion_area(topic, confidentiality, users=None):
     except:
         return False
 
+def update_users(id, confidentiality, users=None):
+    remove_users_of_secret_area(id)
+    if users:
+        add_users_to_secret_area(id, users)
+    update_confidentiality(id, confidentiality)
+    db.session.commit()
+
+def remove_users_of_secret_area(area_id):
+    sql = "DELETE FROM users_of_confidential_discussion_areas WHERE discussion_area_id = :area_id"
+    db.session.execute(text(sql), {"area_id":area_id})
+
+def update_confidentiality(area_id, confidentiality):
+    sql = "UPDATE discussion_areas SET confidential = :confidentiality WHERE id = :area_id"
+    db.session.execute(text(sql), {"area_id":area_id, "confidentiality":confidentiality})
+
 def add_users_to_secret_area(id, users):
     for user in users:
         sql = """INSERT INTO users_of_confidential_discussion_areas (discussion_area_id, user_id)

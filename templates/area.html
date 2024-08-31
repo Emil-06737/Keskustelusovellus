@@ -4,6 +4,10 @@
 
 <h2>{{ topic }}</h2>
 {% if session.user_admin %}
+<form action="/choose-users">
+    <input type="submit" value="Valitse käyttäjät">
+    <input type="hidden" name="id" value="{{ id }}">
+</form>
 <form action="/remove-area" method="post">
     <input type="submit" value="Poista" onclick="return confirm('Haluatko varmasti poistaa keskustelualueen?')">
     <input type="hidden" name="id" value="{{ id }}">
