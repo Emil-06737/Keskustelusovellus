@@ -1,5 +1,5 @@
-from db import db
 from sqlalchemy.sql import text
+from db import db
 from messages import create_message
 from users import has_access_to_chain
 
@@ -24,18 +24,17 @@ def get_messages(chain):
              WHERE M.discussion_chain_id=:chain and U.id = M.creator_id ORDER BY M.id"""
     return db.session.execute(text(sql), {"chain":chain}).fetchall()
 
-def modify_header(id, header):
+def modify_header(id1, header):
     sql = "UPDATE discussion_chains SET header=:header WHERE id=:id"
-    db.session.execute(text(sql), {"header":header, "id":id})
+    db.session.execute(text(sql), {"header":header, "id":id1})
     db.session.commit()
 
 def check_length(header):
-    min = 3
-    max = 50
-    if len(header) < min or len(header) > max:
-        return (min, max)
-    else:
-        return None
+    min1 = 3
+    max1 = 50
+    if len(header) < min1 or len(header) > max1:
+        return (min1, max1)
+    return None
 
 def remove(chain):
     sql = "DELETE FROM discussion_chains WHERE id=:id"

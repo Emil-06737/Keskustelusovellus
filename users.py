@@ -1,9 +1,10 @@
 import os
-from app import app
-from db import db
 from flask import abort, request, session
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.sql import text
 from werkzeug.security import check_password_hash, generate_password_hash
+from app import app
+from db import db
 import discussion_areas
 
 def login(name, password):
@@ -30,7 +31,7 @@ def register(name, password):
         sql = "INSERT INTO users (name, password, admin) VALUES (:name, :password, :admin)"
         db.session.execute(text(sql), {"name":name, "password":hash_value, "admin":False})
         db.session.commit()
-    except:
+    except IntegrityError:
         return False
     return login(name, password)
 
@@ -53,10 +54,10 @@ def check_csrf():
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
 
-def has_access_to_area(id):
-    if discussion_areas.is_confidential(id):
+def has_access_to_area(id1):
+    if discussion_areas.is_confidential(id1):
         if not session.get("user_admin", False):
-            users = discussion_areas.get_users_of_confidential_area(id)
+            users = discussion_areas.get_users_of_confidential_area(id1)
             if session.get("user_id", 0) not in users:
                 return False
     return True
