@@ -67,5 +67,5 @@ def has_access_to_chain(chain):
     return has_access_to_area(area)
 
 def get_normal_users():
-    sql = "SELECT id, name FROM users WHERE admin = False"
+    sql = "SELECT id, name FROM users WHERE admin = False ORDER BY name"
     return db.session.execute(text(sql)).fetchall()
