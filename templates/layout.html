@@ -1,18 +1,29 @@
 <!doctype html>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <title>Keskustelusovellus - {% block title %}{% endblock %}</title>
-<h1>Keskustelusovellus</h1>
-
-<a href="/">Etusivu</a>
-
-{% if session.user_id %}
-Hei {{ session.user_name }}!
-<a href="/logout">Kirjaudu ulos</a>
-{% else %}
-<a href="/login">Kirjaudu sisään</a>
-{% endif %}
-<form action="/result" method="get">
-    Hae viestejä: <input type="text" name="query">
-    <input type="submit" value="Hae">
-</form>
-<hr>
-{% block content %}{% endblock %}
+<div class="container">
+    <nav class="navbar navbar-expand-sm navbar-light">
+        <a class="navbar-brand" href="/">Keskustelusovellus</a>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                {% if session.user_id %}
+                Hei {{ session.user_name }}!
+                {% endif %}
+            </li>
+            <li class="nav-item">
+                {% if session.user_id %}
+                <a class="nav-link" href="/logout">Kirjaudu ulos</a>
+                {% else %}
+                <a class="nav-link" href="/login">Kirjaudu sisään</a>
+                {% endif %}
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0" action="/result">
+            Hae viestejä: <input type="text" name="query">
+            <input type="submit" value="Hae">
+        </form>
+    </nav>
+    <hr>
+    {% block content %}{% endblock %}
+</div>
