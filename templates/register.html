@@ -1,8 +1,7 @@
-<!doctype html>
-<title>Keskustelusovellus - Rekisteröinti</title>
-<h1>Keskustelusovellus</h1>
-<a href="/">Etusivu</a>
-<hr>
+{% extends "layout.html" %}
+{% block title %}Rekisteröinti{% endblock %}
+{% block content %}
+
 <h2>Rekisteröinti</h2>
 <form action="/register" method="post" onsubmit="return check(this)">
     Käyttäjätunnus: <br><input type="text" name="username" minlength="3" maxlength="20">
@@ -26,3 +25,5 @@
         return true
     }
 </script>
+
+{% endblock %}
