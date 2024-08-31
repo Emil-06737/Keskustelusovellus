@@ -1,8 +1,7 @@
-<!doctype html>
-<title>Keskustelusovellus - Kirjautuminen</title>
-<h1>Keskustelusovellus</h1>
-<a href="/">Etusivu</a>
-<hr>
+{% extends "layout.html" %}
+{% block title %}Kirjautuminen{% endblock %}
+{% block content %}
+
 <h2>Kirjautuminen</h2>
 <form action="/login" method="post">
     Käyttäjätunnus: <br><input type="text" name="username" minlength="3" maxlength="20">
@@ -14,3 +13,5 @@
 <a href="/register">Luo tunnus</a>
 <p>
 <a href="/">Palaa takaisin</a>
+
+{% endblock %}
