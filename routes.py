@@ -61,7 +61,7 @@ def register():
             return render_template("error.html", message="Salasanan tulee olla 5-100 merkkiä.")
 
         if not users.register(username, password1):
-            return render_template("error.html", message="Rekisteröinti ei onnistunut.")
+            return render_template("error.html", message="Tämä käyttäjätunnus on jo käytössä.")
         return redirect("/")
 
 @app.route("/create-area", methods=["get", "post"])
