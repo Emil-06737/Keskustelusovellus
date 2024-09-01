@@ -2,45 +2,49 @@
 {% block title %}{{ topic }}{% endblock %}
 {% block content %}
 
-<h2>{{ topic }}</h2>
-{% if session.user_admin %}
-<form action="/choose-users">
-    <input type="submit" value="Valitse käyttäjät">
-    <input type="hidden" name="id" value="{{ id }}">
-</form>
-<form action="/remove-area" method="post">
-    <input type="submit" value="Poista" onclick="return confirm('Haluatko varmasti poistaa keskustelualueen?')">
-    <input type="hidden" name="id" value="{{ id }}">
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-</form>
-<br>
-<br>
-{% endif %}
-
-{% if session.user_id %}
-<form action="/create-chain" method="post">
-    Luo keskusteluketju tähän keskustelualueeseen:
-    <br>
-    Otsikko: <br> <input type="text" name="header" minlength="3" maxlength="50">
-    <br>
-    Aloitusviesti:<br>
-    <textarea name="message" rows="3" cols="50" minlength="1" maxlength="5000"></textarea>
-    <br>
-    <input type="submit" value="Luo keskusteluketju">
-    <input type="hidden" name="area_id" value="{{ id }}">
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-</form>
-<br>
-{% endif %}
-
-{% for chain in chains %}
-<p>
-<a href="/chain/{{ chain.id }}">{{ chain[1] }}</a>
-{% endfor %}
-
-<br>
-<br>
-<p>
-<a href="/">Palaa takaisin</a>
+<div class="row">
+    <div class="col-8">
+        <h2>{{ topic }}</h2>
+        {% if session.user_admin %}
+        <form action="/choose-users">
+            <input type="submit" value="Valitse käyttäjät">
+            <input type="hidden" name="id" value="{{ id }}">
+        </form>
+        <form action="/remove-area" method="post">
+            <input type="submit" value="Poista" onclick="return confirm('Haluatko varmasti poistaa keskustelualueen?')">
+            <input type="hidden" name="id" value="{{ id }}">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        </form>
+        <br>
+        <br>
+        {% endif %}
+        
+        <ul class="list-group">
+            {% for chain in chains %}
+            <li class="list-group-item"><a href="/chain/{{ chain.id }}">{{ chain[1] }}</a></li>
+            {% endfor %}
+        </ul>
+        <br>
+        <br>
+        <a href="/"><button>Palaa takaisin</button></a>
+    </div>
+    {% if session.user_id %}
+    <div class="col-4">
+        <form action="/create-chain" method="post">
+            Luo keskusteluketju tähän keskustelualueeseen:
+            <br>
+            Otsikko: <br> <input type="text" name="header" minlength="3" maxlength="50">
+            <br>
+            Aloitusviesti:<br>
+            <textarea name="message" rows="3" cols="50" minlength="1" maxlength="5000"></textarea>
+            <br>
+            <input type="submit" value="Luo keskusteluketju">
+            <input type="hidden" name="area_id" value="{{ id }}">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        </form>
+        <br>
+    </div>
+    {% endif %}
+</div>
 
 {% endblock %}

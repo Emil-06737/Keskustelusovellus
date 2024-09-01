@@ -10,18 +10,21 @@
 <br>
 {% endif %}
 
-{% for area in areas %}
-<a href="/area/{{ area.id }}">{{ area.topic }}</a>
-<br>
-Ketjujen määrä: {{ area[2] }}
-<br>
-Viestien määrä: {{ area[3] }}
-{% if area[4] %}
-<br>
-Viimeisimmän viestin lähetysaika: {{ area[4].strftime("%Y-%m-%d %H:%M:%S") }}
-{% endif %}
-<br>
-<br>
-{% endfor %}
+<ul class="list-group">
+    {% for area in areas %}
+    <li class="list-group-item">
+        <a href="/area/{{ area.id }}">{{ area.topic }}</a>
+        <br>
+        Ketjujen määrä: {{ area[2] }}
+        <br>
+        Viestien määrä: {{ area[3] }}
+        {% if area[4] %}
+        <br>
+        Viimeisimmän viestin lähetysaika: {{ area[4].strftime("%Y-%m-%d %H:%M:%S") }}
+        {% endif %}
+        <br>
+    </li>
+    {% endfor %}
+</ul>
 
 {% endblock %}

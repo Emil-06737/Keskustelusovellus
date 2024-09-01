@@ -12,29 +12,33 @@
         <input type="hidden" name="id" value="{{ id }}">
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     </form>
+    <br>
     {% endif %}
 </div>
-
-{% for message in messages %}
-<div id="message{{ message[0] }}">
-    <p>
-    <span class="creator">{{ message[4] }}</span>
-    <br>
-    <span class="message">{{ message[1] }}</span>
-    {% if message[2] == session.user_id %}
-    <button class="modify" onclick="modifyMessage('{{ message[0] }}')">Muokkaa</button>
-    {% endif %}
-    <br>
-    <span class="sentAt">{{ message[3].strftime("%Y-%m-%d %H:%M:%S") }}</span>
-    {% if message[2] == session.user_id %}
-    <form class="remove" action="/remove-message" method="post">
-        <input type="submit" value="Poista" onclick="return confirm('Haluatko varmasti poistaa viestin?')">
-        <input type="hidden" name="id" value="{{ message[0] }}">
-        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-    </form>
-    {% endif %}
-</div>
-{% endfor %}
+<ul class="list-group">
+    {% for message in messages %}
+    <li class="list-group-item">
+        <div id="message{{ message[0] }}">
+            <p>
+            <span class="creator">{{ message[4] }}</span>
+            <br>
+            <span class="message">{{ message[1] }}</span>
+            {% if message[2] == session.user_id %}
+            <button class="modify" onclick="modifyMessage('{{ message[0] }}')">Muokkaa</button>
+            {% endif %}
+            <br>
+            <span class="sentAt">{{ message[3].strftime("%Y-%m-%d %H:%M:%S") }}</span>
+            {% if message[2] == session.user_id %}
+            <form class="remove" action="/remove-message" method="post">
+                <input type="submit" value="Poista" onclick="return confirm('Haluatko varmasti poistaa viestin?')">
+                <input type="hidden" name="id" value="{{ message[0] }}">
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            </form>
+            {% endif %}
+        </div>
+    </li>
+    {% endfor %}
+</ul>
 
 {% if session.user_id %}
 <p>
@@ -51,7 +55,7 @@
 <br>
 <br>
 <p>
-<a href="/area/{{ chain[1] }}">Palaa takaisin</a>
+<a href="/area/{{ chain[1] }}"><button>Palaa takaisin</button></a>
 
 <script>
     function modifyHeader() {
