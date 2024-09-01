@@ -6,7 +6,7 @@
 <h2>Keskustelualueen luonti</h2>
 
 <form action="/create-area" method="post">
-    Aihe: <br><input type="text" name="topic" minlength="3" maxlength="50">
+    Aihe: <br><input type="text" name="topic" minlength="3" maxlength="50" required>
     <br>
     Salainen:
     <input id="false" type="radio" name="secret" value="0" onchange="changeUserVisibility()" required> Ei

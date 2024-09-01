@@ -44,7 +44,7 @@
 <p>
 <form action="/create-message" method="post">
     Uusi viesti:<br>
-    <textarea name="message" rows="3" cols="50" minlength="1" maxlength="5000"></textarea>
+    <textarea name="message" rows="3" cols="50" minlength="1" maxlength="5000" required></textarea>
     <br>
     <input type="submit" value="Lähetä viesti">
     <input type="hidden" name="chain_id" value="{{ id }}">
@@ -63,7 +63,7 @@
         header.innerHTML = "";
         var forms = `
             <form action="/modify-chain-header" method="post">
-                <input type="text" name="header" value="{{ chain[0] }}" minlength="3" maxlength="50">
+                <input type="text" name="header" value="{{ chain[0] }}" minlength="3" maxlength="50" required>
                 <input type="submit" value="Tallenna">
                 <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                 <input type="hidden" name="id" value="{{ id }}">
@@ -86,7 +86,7 @@
             <form action="/modify-message" method="post">
                 ${creator}
                 <br>
-                <textarea name="message" rows="3" cols="50" minlength="1" maxlength="5000">${content}</textarea>
+                <textarea name="message" rows="3" cols="50" minlength="1" maxlength="5000" required>${content}</textarea>
                 <br>
                 ${sentAt}
                 <input type="submit" value="Tallenna">

@@ -4,11 +4,11 @@
 
 <h2>Rekisteröinti</h2>
 <form action="/register" method="post" onsubmit="return check(this)">
-    Käyttäjätunnus: <br><input type="text" name="username" minlength="3" maxlength="20">
+    Käyttäjätunnus: <br><input type="text" name="username" minlength="3" maxlength="20" required>
     <p>
-    Salasana: <br><input type="password" name="password1" minlength="5" maxlength="100">
+    Salasana: <br><input type="password" name="password1" minlength="5" maxlength="100" required>
     <p>
-    Salasana uudestaan: <br><input type="password" name="password2" minlength="5" maxlength="100">
+    Salasana uudestaan: <br><input type="password" name="password2" minlength="5" maxlength="100" required>
     <p>
     <input type="submit" value="Luo tunnus">
 </form>
